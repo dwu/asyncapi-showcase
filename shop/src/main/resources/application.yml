@@ -1,0 +1,14 @@
+spring:
+  cloud:
+    function:
+      definition: orderCreated
+    stream:
+      bindings:
+        orderCreated-out-0:
+          destination: orders
+logging:
+  level:
+    root: info
+    org:
+      springframework: info
+
