@@ -28,7 +28,7 @@ components:
     orderCreated:
       name: orderCreated
       title: Order created message
-      summary: Inform that an order was created
+      summary: Information that an order was created
       contentType: application/json
       payload:
         $ref: '#/components/schemas/OrderCreated'

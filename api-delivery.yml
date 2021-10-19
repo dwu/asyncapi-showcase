@@ -17,14 +17,14 @@ channels:
   orders:
     description: The topic where order events are published and consumed
     publish:
-      summary: Receive information about a created order
+      summary: The delivery service receives information about orders when they are created to prepare delivery
       operationId: orderCreated
       message:
         $ref: '#/components/messages/orderCreated'
   invoices:
     description: The topic where notifications about new invoices are published and consumed
     publish:
-      summary: Invoice notification
+      summary: The delivery service receives invoice notifications after an invoice has been issued to finalize delivery processing
       operationId: invoiceCreated
       message:
         $ref: '#/components/messages/invoiceCreated'
@@ -34,14 +34,14 @@ components:
     orderCreated:
       name: orderCreated
       title: Order created message
-      summary: Inform that an order was created
+      summary: Information that an order was created
       contentType: application/json
       payload:
         $ref: '#/components/schemas/OrderCreated'
     invoiceCreated:
       name: invoiceCreated
       title: Invoice created message
-      summary: Inform that an invoice was created
+      summary: Information that an invoice was created
       contentType: application/json
       payload:
         $ref: '#/components/schemas/InvoiceCreated'
