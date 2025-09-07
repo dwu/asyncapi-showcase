@@ -1,0 +1,13 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@asyncapi/modelina": "^5.7.1",
+    "typescript": "^5.9.2"
+  },
+  "scripts": {
+    "generate": "tsx ./generate.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.5"
+  }
+}

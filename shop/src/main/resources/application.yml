@@ -1,11 +1,7 @@
 spring:
-  cloud:
-    function:
-      definition: orderCreated
-    stream:
-      bindings:
-        orderCreated-out-0:
-          destination: orders
+  rabbitmq:
+    host: localhost
+    port: 5672
 logging:
   level:
     root: info

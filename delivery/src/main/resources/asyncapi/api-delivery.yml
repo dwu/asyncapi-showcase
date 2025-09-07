@@ -1,34 +1,49 @@
-asyncapi: 2.2.0
+asyncapi: 3.0.0
 info:
   title: Delivery
-  version: '1.0.0'
+  version: 1.0.0
   description: |
     Delivery API for showcase
-
+defaultContentType: application/json
 servers:
   production:
-    url: localhost:5672
+    host: 'localhost:5672'
     protocol: amqp
     description: Message broker
-
-defaultContentType: application/json
-
 channels:
   orders:
-    description: The topic where order events are published and consumed
-    publish:
-      summary: The delivery service receives information about orders when they are created to prepare delivery
-      operationId: orderCreated
-      message:
+    address: orders
+    messages:
+      orderCreated.message:
         $ref: '#/components/messages/orderCreated'
+    description: The topic where order events are published and consumed
   invoices:
-    description: The topic where notifications about new invoices are published and consumed
-    publish:
-      summary: The delivery service receives invoice notifications after an invoice has been issued to finalize delivery processing
-      operationId: invoiceCreated
-      message:
+    address: invoices
+    messages:
+      invoiceCreated.message:
         $ref: '#/components/messages/invoiceCreated'
-
+    description: >-
+      The topic where notifications about new invoices are published and
+      consumed
+operations:
+  orderCreated:
+    action: receive
+    channel:
+      $ref: '#/channels/orders'
+    summary: >-
+      The delivery service receives information about orders when they are
+      created to prepare delivery
+    messages:
+      - $ref: '#/channels/orders/messages/orderCreated.message'
+  invoiceCreated:
+    action: receive
+    channel:
+      $ref: '#/channels/invoices'
+    summary: >-
+      The delivery service receives invoice notifications after an invoice has
+      been issued to finalize delivery processing
+    messages:
+      - $ref: '#/channels/invoices/messages/invoiceCreated.message'
 components:
   messages:
     orderCreated:
@@ -45,7 +60,6 @@ components:
       contentType: application/json
       payload:
         $ref: '#/components/schemas/InvoiceCreated'
-
   schemas:
     OrderCreated:
       type: object
@@ -71,5 +85,8 @@ components:
         customerid:
           type: string
           description: Customer ID
+        orderid:
+          type: string
+          description: Order ID
         invoiceamount:
           type: number

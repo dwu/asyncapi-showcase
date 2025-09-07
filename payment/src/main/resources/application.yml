@@ -1,16 +1,5 @@
-spring:
-  cloud:
-    function:
-      definition: orderCreated;invoiceCreated
-    stream:
-      bindings:
-        orderCreated-in-0:
-          destination: orders
-        invoiceCreated-out-0:
-          destination: invoices
 logging:
   level:
     root: info
     org:
       springframework: info
-

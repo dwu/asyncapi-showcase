@@ -1,28 +1,30 @@
-asyncapi: 2.2.0
+asyncapi: 3.0.0
 info:
   title: Shop
-  version: '1.0.0'
+  version: 1.0.0
   description: |
     Shop API for showcase
-
+defaultContentType: application/json
 servers:
   production:
-    url: localhost:5672
+    host: 'localhost:5672'
     protocol: amqp
     description: Message broker
-
-defaultContentType: application/json
-
 channels:
   orders:
-    description: The topic where order events are published and consumed
-    subscribe:
-      summary: Send information about a created order
-      operationId: orderCreated
-      message:
-        #$ref: './messages.yml#/components/messages/orderCreated'
+    address: orders
+    messages:
+      orderCreated.message:
         $ref: '#/components/messages/orderCreated'
-
+    description: The topic where order events are published and consumed
+operations:
+  orderCreated:
+    action: send
+    channel:
+      $ref: '#/channels/orders'
+    summary: Send information about a created order
+    messages:
+      - $ref: '#/channels/orders/messages/orderCreated.message'
 components:
   messages:
     orderCreated:
@@ -32,7 +34,6 @@ components:
       contentType: application/json
       payload:
         $ref: '#/components/schemas/OrderCreated'
-
   schemas:
     OrderCreated:
       type: object
