@@ -10,43 +10,11 @@ servers:
     host: 'localhost:5672'
     protocol: amqp
     description: Message broker
-channels:
-  orders:
-    address: orders
-    messages:
-      orderCreated.message:
-        $ref: '#/components/messages/orderCreated'
-    description: The topic where order events are published and consumed
 operations:
   orderCreated:
     action: send
     channel:
-      $ref: '#/channels/orders'
+      $ref: '../../asyncapi/shared.yml#/channels/orders'
     summary: Send information about a created order
     messages:
-      - $ref: '#/channels/orders/messages/orderCreated.message'
-components:
-  messages:
-    orderCreated:
-      name: orderCreated
-      title: Order created message
-      summary: Information that an order was created
-      contentType: application/json
-      payload:
-        $ref: '#/components/schemas/OrderCreated'
-  schemas:
-    OrderCreated:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Order ID
-        customerid:
-          type: string
-          description: Customer ID
-        productid:
-          type: string
-          description: Product ID
-        amount:
-          type: integer
-          description: How many products are ordered
+      - $ref: '../../asyncapi/shared.yml#/channels/orders/messages/orderCreated.message'

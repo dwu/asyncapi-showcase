@@ -10,83 +10,22 @@ servers:
     host: 'localhost:5672'
     protocol: amqp
     description: Message broker
-channels:
-  orders:
-    address: orders
-    messages:
-      orderCreated.message:
-        $ref: '#/components/messages/orderCreated'
-    description: The topic where order events are published and consumed
-  invoices:
-    address: invoices
-    messages:
-      invoiceCreated.message:
-        $ref: '#/components/messages/invoiceCreated'
-    description: >-
-      The topic where notifications about new invoices are published and
-      consumed
 operations:
   orderCreated:
     action: receive
     channel:
-      $ref: '#/channels/orders'
+      $ref: '../../asyncapi/shared.yml#/channels/orders'
     summary: >-
       The delivery service receives information about orders when they are
       created to prepare delivery
     messages:
-      - $ref: '#/channels/orders/messages/orderCreated.message'
+      - $ref: '../../asyncapi/shared.yml#/channels/orders/messages/orderCreated.message'
   invoiceCreated:
     action: receive
     channel:
-      $ref: '#/channels/invoices'
+      $ref: '../../asyncapi/shared.yml#/channels/invoices'
     summary: >-
       The delivery service receives invoice notifications after an invoice has
       been issued to finalize delivery processing
     messages:
-      - $ref: '#/channels/invoices/messages/invoiceCreated.message'
-components:
-  messages:
-    orderCreated:
-      name: orderCreated
-      title: Order created message
-      summary: Information that an order was created
-      contentType: application/json
-      payload:
-        $ref: '#/components/schemas/OrderCreated'
-    invoiceCreated:
-      name: invoiceCreated
-      title: Invoice created message
-      summary: Information that an invoice was created
-      contentType: application/json
-      payload:
-        $ref: '#/components/schemas/InvoiceCreated'
-  schemas:
-    OrderCreated:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Order ID
-        customerid:
-          type: string
-          description: Customer ID
-        productid:
-          type: string
-          description: Product ID
-        amount:
-          type: integer
-          description: How many products are ordered
-    InvoiceCreated:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Invoice ID
-        customerid:
-          type: string
-          description: Customer ID
-        orderid:
-          type: string
-          description: Order ID
-        invoiceamount:
-          type: number
+      - $ref: '../../asyncapi/shared.yml#/channels/invoices/messages/invoiceCreated.message'
